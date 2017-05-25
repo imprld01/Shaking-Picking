@@ -98,4 +98,17 @@
             app:layout_constraintVertical_bias="0.366" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="248dp"
+        android:layout_height="206dp"
+        android:text="0"
+        android:textSize = "270px"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.622" />
+
 </android.support.constraint.ConstraintLayout>
