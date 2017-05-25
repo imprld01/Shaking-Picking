@@ -6,104 +6,6 @@
     android:layout_height="match_parent"
     tools:context="bowns.shaking_picking.MainActivity">
 
-    <LinearLayout
-        android:layout_width="245dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168">
-
-        <TextView
-            android:id="@+id/x_axis_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="X-Axis: "
-            android:textSize = "25px"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="91dp" />
-
-        <TextView
-            android:id="@+id/x_axis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="NULL"
-            android:textSize = "25px"
-            app:layout_constraintHorizontal_bias="0.289"
-            app:layout_constraintVertical_bias="0.204" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="245dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22">
-
-        <TextView
-            android:id="@+id/y_axis_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Y-Axis: "
-            android:textSize = "25px"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="131dp" />
-
-        <TextView
-            android:id="@+id/y_axis"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.20"
-            android:text="NULL"
-            android:textSize = "25px"
-            app:layout_constraintHorizontal_bias="0.289"
-            app:layout_constraintVertical_bias="0.281" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="245dp"
-        android:layout_height="25dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271">
-
-        <TextView
-            android:id="@+id/z_axis_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Z-Axis: "
-            android:textSize = "25px"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="170dp" />
-
-        <TextView
-            android:id="@+id/z_axis"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="NULL"
-            android:textSize = "25px"
-            app:layout_constraintHorizontal_bias="0.289"
-            app:layout_constraintVertical_bias="0.366" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/number"
         android:layout_width="248dp"
@@ -115,6 +17,104 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.652" />
+        app:layout_constraintVertical_bias="0.704" />
+
+    <LinearLayout
+        android:layout_width="245dp"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.285">
+
+        <TextView
+            android:id="@+id/z_axis_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Z-Axis: "
+            android:textSize="50px"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="170dp" />
+
+        <TextView
+            android:id="@+id/z_axis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NULL"
+            android:textSize="50px"
+            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintVertical_bias="0.366" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="245dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212">
+
+        <TextView
+            android:id="@+id/y_axis_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Y-Axis: "
+            android:textSize="50px"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="131dp" />
+
+        <TextView
+            android:id="@+id/y_axis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:text="NULL"
+            android:textSize="50px"
+            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintVertical_bias="0.281" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="245dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.138">
+
+        <TextView
+            android:id="@+id/x_axis_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="X-Axis: "
+            android:textSize="50px"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="91dp" />
+
+        <TextView
+            android:id="@+id/x_axis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NULL"
+            android:textSize="50px"
+            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintVertical_bias="0.204" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
