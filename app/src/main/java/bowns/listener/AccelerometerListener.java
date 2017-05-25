@@ -67,7 +67,7 @@ public class AccelerometerListener implements SensorEventListener {
             FileOutputStream fos = this.context.openFileOutput(AccelerometerListener.fName, this.context.MODE_APPEND);
             fos.write(sb.toString().getBytes());
             fos.close();
-            
+
             Toast.makeText(this.context,
                     "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
                     Toast.LENGTH_LONG).show();
