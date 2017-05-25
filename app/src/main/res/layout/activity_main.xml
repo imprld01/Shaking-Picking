@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="X-Axis: "
+            android:textSize = "25px"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="91dp" />
 
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="NULL"
+            android:textSize = "25px"
             app:layout_constraintHorizontal_bias="0.289"
             app:layout_constraintVertical_bias="0.204" />
 
@@ -55,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Y-Axis: "
+            android:textSize = "25px"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="131dp" />
 
@@ -64,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:text="NULL"
+            android:textSize = "25px"
             app:layout_constraintHorizontal_bias="0.289"
             app:layout_constraintVertical_bias="0.281" />
 
@@ -85,6 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Z-Axis: "
+            android:textSize = "25px"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="170dp" />
 
@@ -94,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="NULL"
+            android:textSize = "25px"
             app:layout_constraintHorizontal_bias="0.289"
             app:layout_constraintVertical_bias="0.366" />
     </LinearLayout>

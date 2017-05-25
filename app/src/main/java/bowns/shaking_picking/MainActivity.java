@@ -52,20 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void findViews() {
 
-        TextView x_label = (TextView)findViewById(R.id.x_axis_label);
-        TextView y_label = (TextView)findViewById(R.id.y_axis_label);
-        TextView z_label = (TextView)findViewById(R.id.z_axis_label);
-
         this.tv_x = (TextView)findViewById(R.id.x_axis);
         this.tv_y = (TextView)findViewById(R.id.y_axis);
         this.tv_z = (TextView)findViewById(R.id.z_axis);
         this.tv_n = (TextView)findViewById(R.id.number);
-
-        x_label.setTextSize(25);
-        y_label.setTextSize(25);
-        z_label.setTextSize(25);
-        this.tv_x.setTextSize(25);
-        this.tv_y.setTextSize(25);
-        this.tv_z.setTextSize(25);
     }
 }
