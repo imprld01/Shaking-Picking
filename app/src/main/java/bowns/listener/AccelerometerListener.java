@@ -65,9 +65,8 @@ public class AccelerometerListener implements SensorEventListener {
         double z = Math.round(gValues[2] * 100) / 100.0;
 
         /* determine it's shaking or not */
-
         long current = System.currentTimeMillis();
-        if (this.pastTime != 0 && (current - this.pastTime) > 36) { // sampling every 50ms
+        if (this.pastTime != 0 && (current - this.pastTime) > 36) { // sampling every 36ms
             double diff = Math.abs(y - this.past_y) + Math.abs(z - this.past_z);
 
             if (diff > AccelerometerListener.SHAKE_THRESHOLD){
