@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class AccelerometerListener implements SensorEventListener {
 
@@ -19,16 +20,33 @@ public class AccelerometerListener implements SensorEventListener {
     private TextView tv_x;
     private TextView tv_y;
     private TextView tv_z;
+    private TextView tv_n;
 
+    private double past_y;
+    private double past_z;
+
+    private long pastTime;
+
+    private boolean noGap;
+
+    private final static int SHAKE_THRESHOLD = 50;
     private final static String fName = "accValuesRecord.txt";
 
-    public AccelerometerListener(Context context, TextView tv_x, TextView tv_y, TextView tv_z) {
+    public AccelerometerListener(Context context, TextView tv_x, TextView tv_y, TextView tv_z, TextView tv_n) {
 
         this.context = context;
 
         this.tv_x = tv_x;
         this.tv_y = tv_y;
         this.tv_z = tv_z;
+        this.tv_n = tv_n;
+
+        this.past_y = 0;
+        this.past_z = 0;
+
+        this.pastTime = 0;
+
+        noGap = true;
     }
 
     @Override
@@ -45,6 +63,25 @@ public class AccelerometerListener implements SensorEventListener {
         double x = Math.round(gValues[0] * 100) / 100.0;
         double y = Math.round(gValues[1] * 100) / 100.0;
         double z = Math.round(gValues[2] * 100) / 100.0;
+
+        /* determine it's shaking or not */
+
+        long current = System.currentTimeMillis();
+        if (this.pastTime != 0 && (current - this.pastTime) > 36) { // sampling every 50ms
+            double diff = Math.abs(y - this.past_y) + Math.abs(z - this.past_z);
+
+            if (diff > AccelerometerListener.SHAKE_THRESHOLD){
+                if(this.noGap) {
+                    this.toPick();
+                    this.noGap = false;
+                }
+                else this.noGap = true;
+            }
+
+            this.past_y = y;
+            this.past_z = z;
+        }
+        this.pastTime = current;
 
         String xs = ((x >= 0) ? "+" : "") + String.valueOf(x);
         String ys = ((y >= 0) ? "+" : "") + String.valueOf(y);
@@ -68,13 +105,22 @@ public class AccelerometerListener implements SensorEventListener {
             fos.write(sb.toString().getBytes());
             fos.close();
 
+            /*
             Toast.makeText(this.context,
                     "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
                     Toast.LENGTH_LONG).show();
+            */
         }
         catch(IOException e) {
             Toast.makeText(this.context,
                     "saving file error:(", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void toPick() {
+
+        Random rand = new Random();
+        int result = rand.nextInt(100) + 1;
+        this.tv_n.setText(String.valueOf(result));
     }
 }

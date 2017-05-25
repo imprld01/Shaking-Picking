@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_x;
     private TextView tv_y;
     private TextView tv_z;
+    private TextView tv_n;
 
     private SensorManager sm;
     private AccelerometerListener al;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         this.findViews();
 
         this.sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        this.al = new AccelerometerListener(MainActivity.this, this.tv_x, this.tv_y, this.tv_z);
+        this.al = new AccelerometerListener(MainActivity.this, this.tv_x, this.tv_y, this.tv_z, this.tv_n);
     }
 
     @Override
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         this.tv_x = (TextView)findViewById(R.id.x_axis);
         this.tv_y = (TextView)findViewById(R.id.y_axis);
         this.tv_z = (TextView)findViewById(R.id.z_axis);
+        this.tv_n = (TextView)findViewById(R.id.number);
 
         x_label.setTextSize(25);
         y_label.setTextSize(25);
