@@ -116,7 +116,7 @@ public class AccelerometerListener implements SensorEventListener {
         }
     }
 
-    public void toPick() {
+    private void toPick() {
 
         Random rand = new Random();
         int result = rand.nextInt(100) + 1;
