@@ -65,9 +65,7 @@ public class AccelerometerListener implements SensorEventListener {
                     AccelerometerListener.fName, this.context.MODE_APPEND);
         }
         catch(FileNotFoundException e) {
-            Toast.makeText(this.context,
-                    AccelerometerListener.fName + " is not found :(",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this.context, "file not found :(", Toast.LENGTH_LONG).show();
         }
     }
 
