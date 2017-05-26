@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,6 +33,8 @@ public class AccelerometerListener implements SensorEventListener {
 
     private boolean noGap;
 
+    private File eFile;
+    private OutputStream os;
     private FileOutputStream fos;
 
     private final static int SHAKE_THRESHOLD = 50;
@@ -53,7 +56,19 @@ public class AccelerometerListener implements SensorEventListener {
 
         this.noGap = true;
 
-        this.fos = this.context.openFileOutput(AccelerometerListener.fName, this.context.MODE_APPEND);
+        try {
+            this.eFile = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                    AccelerometerListener.fName);
+            this.os = new FileOutputStream(this.eFile);
+            this.fos = this.context.openFileOutput(
+                    AccelerometerListener.fName, this.context.MODE_APPEND);
+        }
+        catch(FileNotFoundException e) {
+            Toast.makeText(this.context,
+                    AccelerometerListener.fName + " is not found :(",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -118,22 +133,18 @@ public class AccelerometerListener implements SensorEventListener {
             */
 
             /* save under external storage */
-            File ef = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File eFile = new File(ef, AccelerometerListener.fName);
-
             if (!this.isSdcardWritable())
                 Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
             else {
-                if (!eFile.getParentFile().exists()) eFile.getParentFile().mkdirs();
-                if (eFile.exists()) eFile.delete();
+                if (!this.eFile.getParentFile().exists()) this.eFile.getParentFile().mkdirs();
+                if (this.eFile.exists()) this.eFile.delete();
 
-                OutputStream os = new FileOutputStream(eFile);
-                os.write(sb.toString().getBytes());
-                os.close();
+                this.os.write(sb.toString().getBytes());
+                this.os.close();
 
                 /*
                 Toast.makeText(this.context,
-                        "saving at " + eFile.toString(), Toast.LENGTH_LONG).show();
+                        "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
                 */
             }
         }
