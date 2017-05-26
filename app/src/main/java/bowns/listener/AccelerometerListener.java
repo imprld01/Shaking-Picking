@@ -57,12 +57,20 @@ public class AccelerometerListener implements SensorEventListener {
         this.noGap = true;
 
         try {
-            this.eFile = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                    AccelerometerListener.fName);
-            this.os = new FileOutputStream(this.eFile);
             this.fos = this.context.openFileOutput(
                     AccelerometerListener.fName, this.context.MODE_APPEND);
+
+            if (!this.isSdcardWritable())
+                Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
+            else {
+                if (!this.eFile.getParentFile().exists()) this.eFile.getParentFile().mkdirs();
+                if (this.eFile.exists()) this.eFile.delete();
+
+                this.eFile = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                        AccelerometerListener.fName);
+                this.os = new FileOutputStream(this.eFile);
+            }
         }
         catch(FileNotFoundException e) {
             Toast.makeText(this.context, "file not found :(", Toast.LENGTH_LONG).show();
@@ -149,19 +157,12 @@ public class AccelerometerListener implements SensorEventListener {
             */
 
             /* save under external storage */
-            if (!this.isSdcardWritable())
-                Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
-            else {
-                if (!this.eFile.getParentFile().exists()) this.eFile.getParentFile().mkdirs();
-                if (this.eFile.exists()) this.eFile.delete();
+            this.os.write(sb.toString().getBytes());
 
-                this.os.write(sb.toString().getBytes());
-
-                /*
-                Toast.makeText(this.context,
-                        "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
-                */
-            }
+            /*
+            Toast.makeText(this.context,
+                    "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
+            */
         }
         catch(IOException e) {
             Toast.makeText(this.context,
