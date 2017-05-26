@@ -4,11 +4,14 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.os.Environment;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -100,6 +103,7 @@ public class AccelerometerListener implements SensorEventListener {
         sb.append(zs); sb.append("\n");
 
         try {
+            /* save under internal storage */
             FileOutputStream fos = this.context.openFileOutput(AccelerometerListener.fName, this.context.MODE_APPEND);
             fos.write(sb.toString().getBytes());
             fos.close();
@@ -109,10 +113,30 @@ public class AccelerometerListener implements SensorEventListener {
                     "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
                     Toast.LENGTH_LONG).show();
             */
+
+            /* save under external storage */
+            File extf = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File file = new File(extf, AccelerometerListener.fName);
+
+            if(!this.isSdcardWritable())
+                Toast.makeText(this.context, "Error using sdcard!", Toast.LENGTH_LONG).show();
+            else {
+                if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
+                if(file.exists()) file.delete();
+
+                OutputStream os = new FileOutputStream(file);
+                os.write(sb.toString().getBytes());
+                os.close();
+
+                /*
+                Toast.makeText(this.context,
+                        "saving at " + file.toString(), Toast.LENGTH_LONG).show();
+                */
+            }
         }
         catch(IOException e) {
             Toast.makeText(this.context,
-                    "saving file error:(", Toast.LENGTH_LONG).show();
+                    "saving file error :(", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -121,5 +145,12 @@ public class AccelerometerListener implements SensorEventListener {
         Random rand = new Random();
         int result = rand.nextInt(100) + 1;
         this.tv_n.setText(String.valueOf(result));
+    }
+
+    private boolean isSdcardWritable() {
+
+        String state = Environment.getExternalStorageState();
+        if(state.equals(Environment.MEDIA_MOUNTED)) return true;
+        else return false;
     }
 }
