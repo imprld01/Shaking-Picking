@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -34,8 +33,8 @@ public class AccelerometerListener implements SensorEventListener {
     private boolean noGap;
 
     private File eFile;
-    private OutputStream os;
-    private FileOutputStream fos;
+    private FileOutputStream fos_internal;
+    private FileOutputStream fos_external;
 
     private final static int SHAKE_THRESHOLD = 50;
     private final static String fName = "accValuesRecord.txt";
@@ -57,7 +56,7 @@ public class AccelerometerListener implements SensorEventListener {
         this.noGap = true;
 
         try {
-            this.fos = this.context.openFileOutput(
+            this.fos_internal = this.context.openFileOutput(
                     AccelerometerListener.fName, this.context.MODE_APPEND);
 
             if (!this.isSdcardWritable())
@@ -69,7 +68,7 @@ public class AccelerometerListener implements SensorEventListener {
                 this.eFile = new File(
                         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
                         AccelerometerListener.fName);
-                this.os = new FileOutputStream(this.eFile);
+                this.fos_external = new FileOutputStream(this.eFile);
             }
         }
         catch(FileNotFoundException e) {
@@ -129,8 +128,8 @@ public class AccelerometerListener implements SensorEventListener {
 
         try {
             /* save under internal storage */
-            this.fos.write(sb.toString().getBytes());
-            this.fos.close();
+            this.fos_external.write(sb.toString().getBytes());
+            this.fos_external.close();
 
             /*
             Toast.makeText(this.context,
@@ -139,8 +138,8 @@ public class AccelerometerListener implements SensorEventListener {
             */
 
             /* save under external storage */
-            this.os.write(sb.toString().getBytes());
-            this.os.close();
+            this.fos_external.write(sb.toString().getBytes());
+            this.fos_external.close();
 
             /*
             Toast.makeText(this.context,
