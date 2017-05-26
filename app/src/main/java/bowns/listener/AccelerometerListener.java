@@ -78,25 +78,6 @@ public class AccelerometerListener implements SensorEventListener {
     }
 
     @Override
-    public void finalize() {
-
-        try {
-            this.fos.close();
-            this.os.close();
-        }
-        catch(IOException e) {
-            Toast.makeText(this.context, "close file exception :(", Toast.LENGTH_LONG).show();
-        }
-
-        try {
-            super.finalize();
-        }
-        catch(Throwable e) {
-            Toast.makeText(this.context, "finalize exception :(", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     @Override
@@ -149,6 +130,7 @@ public class AccelerometerListener implements SensorEventListener {
         try {
             /* save under internal storage */
             this.fos.write(sb.toString().getBytes());
+            this.fos.close();
 
             /*
             Toast.makeText(this.context,
@@ -158,6 +140,7 @@ public class AccelerometerListener implements SensorEventListener {
 
             /* save under external storage */
             this.os.write(sb.toString().getBytes());
+            this.os.close();
 
             /*
             Toast.makeText(this.context,
