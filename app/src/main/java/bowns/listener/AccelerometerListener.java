@@ -32,7 +32,6 @@ public class AccelerometerListener implements SensorEventListener {
 
     private boolean noGap;
 
-    private File eFile;
     private FileOutputStream fos_internal;
     private FileOutputStream fos_external;
 
@@ -59,20 +58,39 @@ public class AccelerometerListener implements SensorEventListener {
             this.fos_internal = this.context.openFileOutput(
                     AccelerometerListener.fName, this.context.MODE_APPEND);
 
+            File eFile = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                    AccelerometerListener.fName);
             if (!this.isSdcardWritable())
                 Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
             else {
-                if (!this.eFile.getParentFile().exists()) this.eFile.getParentFile().mkdirs();
-                if (this.eFile.exists()) this.eFile.delete();
+                if (!eFile.getParentFile().exists()) eFile.getParentFile().mkdirs();
+                if (eFile.exists()) eFile.delete();
 
-                this.eFile = new File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                        AccelerometerListener.fName);
-                this.fos_external = new FileOutputStream(this.eFile);
+                this.fos_external = new FileOutputStream(eFile);
             }
         }
         catch(FileNotFoundException e) {
             Toast.makeText(this.context, "file not found :(", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void finalize() {
+
+        try {
+            this.fos_internal.close();
+            this.fos_external.close();
+        }
+        catch(IOException e) {
+            Toast.makeText(this.context, "close file exception :(", Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            super.finalize();
+        }
+        catch(Throwable e) {
+            Toast.makeText(this.context, "finalize exception :(", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -128,8 +146,7 @@ public class AccelerometerListener implements SensorEventListener {
 
         try {
             /* save under internal storage */
-            this.fos_external.write(sb.toString().getBytes());
-            this.fos_external.close();
+            this.fos_internal.write(sb.toString().getBytes());
 
             /*
             Toast.makeText(this.context,
@@ -139,7 +156,6 @@ public class AccelerometerListener implements SensorEventListener {
 
             /* save under external storage */
             this.fos_external.write(sb.toString().getBytes());
-            this.fos_external.close();
 
             /*
             Toast.makeText(this.context,
