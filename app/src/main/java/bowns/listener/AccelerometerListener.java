@@ -119,21 +119,21 @@ public class AccelerometerListener implements SensorEventListener {
 
             /* save under external storage */
             File ef = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File file = new File(ef, AccelerometerListener.fName);
+            File eFile = new File(ef, AccelerometerListener.fName);
 
             if (!this.isSdcardWritable())
                 Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
             else {
-                if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-                if (file.exists()) file.delete();
+                if (!eFile.getParentFile().exists()) eFile.getParentFile().mkdirs();
+                if (eFile.exists()) eFile.delete();
 
-                OutputStream os = new FileOutputStream(file);
+                OutputStream os = new FileOutputStream(eFile);
                 os.write(sb.toString().getBytes());
                 os.close();
 
                 /*
                 Toast.makeText(this.context,
-                        "saving at " + file.toString(), Toast.LENGTH_LONG).show();
+                        "saving at " + eFile.toString(), Toast.LENGTH_LONG).show();
                 */
             }
         }
