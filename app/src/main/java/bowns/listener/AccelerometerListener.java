@@ -32,6 +32,8 @@ public class AccelerometerListener implements SensorEventListener {
 
     private boolean noGap;
 
+    private FileOutputStream fos;
+
     private final static int SHAKE_THRESHOLD = 50;
     private final static String fName = "accValuesRecord.txt";
 
@@ -49,7 +51,9 @@ public class AccelerometerListener implements SensorEventListener {
 
         this.pastTime = 0;
 
-        noGap = true;
+        this.noGap = true;
+
+        this.fos = this.context.openFileOutput(AccelerometerListener.fName, this.context.MODE_APPEND);
     }
 
     @Override
@@ -104,9 +108,8 @@ public class AccelerometerListener implements SensorEventListener {
 
         try {
             /* save under internal storage */
-            FileOutputStream fos = this.context.openFileOutput(AccelerometerListener.fName, this.context.MODE_APPEND);
-            fos.write(sb.toString().getBytes());
-            fos.close();
+            this.fos.write(sb.toString().getBytes());
+            this.fos.close();
 
             /*
             Toast.makeText(this.context,
