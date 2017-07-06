@@ -78,7 +78,7 @@ public class AccelerometerListener implements SensorEventListener {
         double y = Math.round(gValues[1] * 100) / 100.0;
         double z = Math.round(gValues[2] * 100) / 100.0;
 
-        this.toShake(y, z);
+        this.shakeDetect(y, z);
 
         Bundle paraPack = new Bundle();
         paraPack.putString("X-VALUE", ((x >= 0) ? "+" : "") + String.valueOf(x));
@@ -92,7 +92,7 @@ public class AccelerometerListener implements SensorEventListener {
         new SaveAccuracyValues(this.context, paraPack).start();
     }
 
-    private void toShake(double y, double z) {
+    private void shakeDetect(double y, double z) {
 
         /* determine it's shaking or not */
         long current = System.currentTimeMillis();
