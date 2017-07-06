@@ -4,21 +4,21 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.os.Environment;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
+
+import bowns.shaking_picking.MainActivity;
+import bowns.thread.SaveAccuracyValues;
 
 public class AccelerometerListener implements SensorEventListener {
 
     private Context context;
+    private Handler mainHandler;
 
     private TextView tv_x;
     private TextView tv_y;
@@ -32,15 +32,12 @@ public class AccelerometerListener implements SensorEventListener {
 
     private boolean noGap;
 
-    private FileOutputStream fos_internal;
-    private FileOutputStream fos_external;
-
     private final static int SHAKE_THRESHOLD = 50;
-    private final static String fName = "accValuesRecord.txt";
 
-    public AccelerometerListener(Context context, TextView tv_x, TextView tv_y, TextView tv_z, TextView tv_n) {
+    public AccelerometerListener(Context context, Handler mainHandler, TextView tv_x, TextView tv_y, TextView tv_z, TextView tv_n) {
 
         this.context = context;
+        this.mainHandler = mainHandler;
 
         this.tv_x = tv_x;
         this.tv_y = tv_y;
@@ -53,38 +50,10 @@ public class AccelerometerListener implements SensorEventListener {
         this.pastTime = 0;
 
         this.noGap = true;
-
-        try {
-            this.fos_internal = this.context.openFileOutput(
-                    AccelerometerListener.fName, this.context.MODE_APPEND);
-
-            File eFile = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                    AccelerometerListener.fName);
-            if (!this.isSdcardWritable())
-                Toast.makeText(this.context, "sdcard isn't writable!", Toast.LENGTH_LONG).show();
-            else {
-                if (!eFile.getParentFile().exists()) eFile.getParentFile().mkdirs();
-                if (eFile.exists()) eFile.delete();
-
-                this.fos_external = new FileOutputStream(eFile);
-            }
-        }
-        catch(FileNotFoundException e) {
-            Toast.makeText(this.context, "file not found :(", Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
     public void finalize() {
-
-        try {
-            this.fos_internal.close();
-            this.fos_external.close();
-        }
-        catch(IOException e) {
-            Toast.makeText(this.context, "close file exception :(", Toast.LENGTH_LONG).show();
-        }
 
         try {
             super.finalize();
@@ -109,6 +78,22 @@ public class AccelerometerListener implements SensorEventListener {
         double y = Math.round(gValues[1] * 100) / 100.0;
         double z = Math.round(gValues[2] * 100) / 100.0;
 
+        this.toShake(y, z);
+
+        Bundle paraPack = new Bundle();
+        paraPack.putString("X-VALUE", ((x >= 0) ? "+" : "") + String.valueOf(x));
+        paraPack.putString("Y-VALUE", ((y >= 0) ? "+" : "") + String.valueOf(y));
+        paraPack.putString("Z-VALUE", ((z >= 0) ? "+" : "") + String.valueOf(z));
+        Message m = new Message();
+        m.what = MainActivity.UPDATE_ACCURACY_VALUES_UI;
+        m.setData(paraPack);
+        this.mainHandler.sendMessage(m);
+
+        new SaveAccuracyValues(this.context, paraPack).start();
+    }
+
+    private void toShake(double y, double z) {
+
         /* determine it's shaking or not */
         long current = System.currentTimeMillis();
         if (this.pastTime != 0 && (current - this.pastTime) > 36) { // sampling every 36ms
@@ -126,59 +111,13 @@ public class AccelerometerListener implements SensorEventListener {
             this.past_z = z;
         }
         this.pastTime = current;
-
-        String xs = ((x >= 0) ? "+" : "") + String.valueOf(x);
-        String ys = ((y >= 0) ? "+" : "") + String.valueOf(y);
-        String zs = ((z >= 0) ? "+" : "") + String.valueOf(z);
-
-        /* show the acc values */
-        this.tv_x.setText(xs);
-        this.tv_y.setText(ys);
-        this.tv_z.setText(zs);
-
-        /* save the acc values */
-        StringBuilder sb = new StringBuilder();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
-        sb.append(sdf.format(new Date())); sb.append("\t");
-        sb.append(xs); sb.append("\t");
-        sb.append(ys); sb.append("\t");
-        sb.append(zs); sb.append("\n");
-
-        try {
-            /* save under internal storage */
-            this.fos_internal.write(sb.toString().getBytes());
-
-            /*
-            Toast.makeText(this.context,
-                    "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
-                    Toast.LENGTH_LONG).show();
-            */
-
-            /* save under external storage */
-            this.fos_external.write(sb.toString().getBytes());
-
-            /*
-            Toast.makeText(this.context,
-                    "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
-            */
-        }
-        catch(IOException e) {
-            Toast.makeText(this.context,
-                    "saving file error :(", Toast.LENGTH_LONG).show();
-        }
     }
 
     private void toPick() {
 
-        Random rand = new Random();
-        int result = rand.nextInt(100) + 1;
-        this.tv_n.setText(String.valueOf(result));
-    }
-
-    private boolean isSdcardWritable() {
-
-        String state = Environment.getExternalStorageState();
-        if(state.equals(Environment.MEDIA_MOUNTED)) return true;
-        else return false;
+        Message m = new Message();
+        m.arg1 = new Random().nextInt(100) + 1;
+        m.what = MainActivity.UPDATE_PICK_NUMBER_UI;
+        this.mainHandler.sendMessage(m);
     }
 }
