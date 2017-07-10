@@ -1,35 +1,32 @@
 package bowns.thread;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Environment;
-import android.widget.Toast;
+        import android.content.Context;
+        import android.os.Bundle;
+        import android.os.Environment;
+        import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+        import java.io.File;
+        import java.io.FileNotFoundException;
+        import java.io.FileOutputStream;
+        import java.io.IOException;
+        import java.text.SimpleDateFormat;
+        import java.util.Date;
 
-public class SaveAccuracyValues extends Thread {
+public class SaveAccuracyValues {
 
     private Context context;
-    private Bundle paraPack;
 
     private FileOutputStream fos_internal;
     private FileOutputStream fos_external;
 
     private final static String fName = "accValuesRecord.txt";
 
-    public SaveAccuracyValues(Context context, Bundle paraPack) {
+    public SaveAccuracyValues(Context context) {
 
         this.context = context;
-        this.paraPack = paraPack;
 
         try {
-            this.fos_internal = this.context.openFileOutput(
-                    this.fName, this.context.MODE_APPEND);
+            this.fos_internal = this.context.openFileOutput(this.fName, this.context.MODE_APPEND);
 
             File eFile = new File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
@@ -48,42 +45,37 @@ public class SaveAccuracyValues extends Thread {
         }
     }
 
-    public void run() {
+    public void run(Bundle paraPack) {
 
-        try{
-            /* save the acc values */
-            StringBuilder sb = new StringBuilder();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
-            sb.append(sdf.format(new Date())); sb.append("\t");
-            sb.append(paraPack.getString("X-VALUE")); sb.append("\t");
-            sb.append(paraPack.getString("Y-VALUE")); sb.append("\t");
-            sb.append(paraPack.getString("Z-VALUE")); sb.append("\n");
+        /* save the acc values */
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
+        sb.append(sdf.format(new Date())); sb.append("\t");
+        sb.append(paraPack.getString("X-VALUE")); sb.append("\t");
+        sb.append(paraPack.getString("Y-VALUE")); sb.append("\t");
+        sb.append(paraPack.getString("Z-VALUE")); sb.append("\n");
 
-            try {
-                /* save under internal storage */
-                this.fos_internal.write(sb.toString().getBytes());
+        try {
+            /* save under internal storage */
+            this.fos_internal.write(sb.toString().getBytes());
 
-                /*
-                Toast.makeText(this.context,
-                        "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
-                        Toast.LENGTH_LONG).show();
-                */
+            /*
+            Toast.makeText(this.context,
+                    "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
+                    Toast.LENGTH_LONG).show();
+            */
 
-                /* save under external storage */
-                this.fos_external.write(sb.toString().getBytes());
+            /* save under external storage */
+            this.fos_external.write(sb.toString().getBytes());
 
-                /*
-                Toast.makeText(this.context,
-                        "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
-                */
-            }
-            catch(IOException e) {
-                Toast.makeText(this.context,
-                        "saving file error :(", Toast.LENGTH_LONG).show();
-            }
+            /*
+            Toast.makeText(this.context,
+                    "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
+            */
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(IOException e) {
+            Toast.makeText(this.context,
+                    "saving file error :(", Toast.LENGTH_LONG).show();
         }
     }
 

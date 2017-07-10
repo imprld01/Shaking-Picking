@@ -7,7 +7,6 @@ import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import java.util.Random;
 
@@ -18,6 +17,7 @@ public class AccelerometerListener implements SensorEventListener {
 
     private Context context;
     private Handler mainHandler;
+    private SaveAccuracyValues sav;
 
     private double past_y;
     private double past_z;
@@ -39,17 +39,8 @@ public class AccelerometerListener implements SensorEventListener {
         this.pastTime = 0;
 
         this.noGap = true;
-    }
 
-    @Override
-    public void finalize() {
-
-        try {
-            super.finalize();
-        }
-        catch(Throwable e) {
-            Toast.makeText(this.context, "finalize exception :(", Toast.LENGTH_LONG).show();
-        }
+        this.sav = new SaveAccuracyValues(this.context);
     }
 
     @Override
@@ -78,7 +69,7 @@ public class AccelerometerListener implements SensorEventListener {
         m.setData(paraPack);
         this.mainHandler.sendMessage(m);
 
-        new SaveAccuracyValues(this.context, paraPack).start();
+        this.sav.run(paraPack);
     }
 
     private void shakeDetect(double y, double z) {
