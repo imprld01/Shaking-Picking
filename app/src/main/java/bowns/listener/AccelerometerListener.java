@@ -7,7 +7,6 @@ import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -20,11 +19,6 @@ public class AccelerometerListener implements SensorEventListener {
     private Context context;
     private Handler mainHandler;
 
-    private TextView tv_x;
-    private TextView tv_y;
-    private TextView tv_z;
-    private TextView tv_n;
-
     private double past_y;
     private double past_z;
 
@@ -34,15 +28,10 @@ public class AccelerometerListener implements SensorEventListener {
 
     private final static int SHAKE_THRESHOLD = 50;
 
-    public AccelerometerListener(Context context, Handler mainHandler, TextView tv_x, TextView tv_y, TextView tv_z, TextView tv_n) {
+    public AccelerometerListener(Context context, Handler mainHandler) {
 
         this.context = context;
         this.mainHandler = mainHandler;
-
-        this.tv_x = tv_x;
-        this.tv_y = tv_y;
-        this.tv_z = tv_z;
-        this.tv_n = tv_n;
 
         this.past_y = 0;
         this.past_z = 0;

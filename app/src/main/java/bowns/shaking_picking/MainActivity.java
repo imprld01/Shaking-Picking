@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         this.sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        this.al = new AccelerometerListener(MainActivity.this, this.handler, this.tv_x, this.tv_y, this.tv_z, this.tv_n);
+        this.al = new AccelerometerListener(MainActivity.this, this.handler);
     }
 
     @Override

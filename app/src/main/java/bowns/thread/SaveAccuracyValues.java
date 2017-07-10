@@ -15,7 +15,6 @@ import java.util.Date;
 public class SaveAccuracyValues extends Thread {
 
     private Context context;
-
     private Bundle paraPack;
 
     private FileOutputStream fos_internal;
@@ -49,45 +48,42 @@ public class SaveAccuracyValues extends Thread {
         }
     }
 
-    @Override
     public void run() {
 
-        while(true){
-            try{
-                /* save the acc values */
-                StringBuilder sb = new StringBuilder();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
-                sb.append(sdf.format(new Date())); sb.append("\t");
-                sb.append(paraPack.getString("X-VALUE")); sb.append("\t");
-                sb.append(paraPack.getString("Y-VALUE")); sb.append("\t");
-                sb.append(paraPack.getString("Z-VALUE")); sb.append("\n");
+        try{
+            /* save the acc values */
+            StringBuilder sb = new StringBuilder();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
+            sb.append(sdf.format(new Date())); sb.append("\t");
+            sb.append(paraPack.getString("X-VALUE")); sb.append("\t");
+            sb.append(paraPack.getString("Y-VALUE")); sb.append("\t");
+            sb.append(paraPack.getString("Z-VALUE")); sb.append("\n");
 
-                try {
-                    /* save under internal storage */
-                    this.fos_internal.write(sb.toString().getBytes());
+            try {
+                /* save under internal storage */
+                this.fos_internal.write(sb.toString().getBytes());
 
-                    /*
-                    Toast.makeText(this.context,
-                            "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
-                            Toast.LENGTH_LONG).show();
-                    */
+                /*
+                Toast.makeText(this.context,
+                        "saving at " + this.context.getFileStreamPath(AccelerometerListener.fName),
+                        Toast.LENGTH_LONG).show();
+                */
 
-                    /* save under external storage */
-                    this.fos_external.write(sb.toString().getBytes());
+                /* save under external storage */
+                this.fos_external.write(sb.toString().getBytes());
 
-                    /*
-                    Toast.makeText(this.context,
-                            "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
-                    */
-                }
-                catch(IOException e) {
-                    Toast.makeText(this.context,
-                            "saving file error :(", Toast.LENGTH_LONG).show();
-                }
+                /*
+                Toast.makeText(this.context,
+                        "saving at " + this.eFile.toString(), Toast.LENGTH_LONG).show();
+                */
             }
-            catch(Exception e){
-                e.printStackTrace();
+            catch(IOException e) {
+                Toast.makeText(this.context,
+                        "saving file error :(", Toast.LENGTH_LONG).show();
             }
+        }
+        catch(Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -100,6 +96,13 @@ public class SaveAccuracyValues extends Thread {
 
     @Override
     public void finalize() {
+
+        try {
+            super.finalize();
+        }
+        catch(Throwable e) {
+            Toast.makeText(this.context, "override exception :(", Toast.LENGTH_LONG).show();
+        }
 
         try {
             this.fos_internal.close();
